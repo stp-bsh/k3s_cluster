@@ -1,6 +1,6 @@
 ## Overview
-This project provisions a k3s Kubernetes cluster with one master and 1 worker node using Vagrant and VirtualBox.
-You can, however, have any number of master/worker nodes by changing the settings in `config.yaml`.
+This project provisions a one master one worker HA Kubernetes cluster using `k3s` with `vagrant` and `VirtualBox`. HA is accomplished by using `etcd` as cluster data store.
+Starting point is one master one worker, however, any number of masters/workers can be provisioned changing the settings in `config.yaml`.
 
 ## Quickstart
 ```
@@ -10,6 +10,8 @@ $ vagrant up
 $ export KUBECONFIG=$(pwd)/k3s.yaml
 $ kubectl get node -o wide
 ```
+NOTES: By default `k3s.yaml` points to `https://k3s.local:6443` if `k3s.clusterName` is not set. Make sure `k3s.local` is resolvable from where `kubectl` is execute.
+You may have to add `k3s.local` as an entry into `/etc/hosts` (Linux) or `C:\Windows\system32\drivers\etc\hosts` (Windows) file.
 
 ## Troubleshooting
 __Problem__: k3s won't start completely.

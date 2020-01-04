@@ -11,3 +11,6 @@ logs
 pid
 .vagrant/
 k3s.yaml
+.hosts
+.env
+tmp/

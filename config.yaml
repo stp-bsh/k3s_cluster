@@ -3,17 +3,20 @@ k3s:
   # Ref: https://github.com/rancher/k3s/releases
   version: "1.0.1"
 
-  # Shared token for node joining
+  # Shared token for node joining. Set to any random string
   token: "ahkie0kohcub7wun6eeg7Eengee1ael8"
 
   # Ref: https://rancher.com/docs/k3s/latest/en/installation/datastore/#datastore-endpoint-format-and-functionality
-  datastoreEndpoint: "http://etcd.local:2379"
+  # Default: etcd.local
+  datastoreEndpoint: ""
   
-  # DNS name used to communicate with cluster and workers used to join cluster.
-  clusterName: "k3s.local"
+  # Used for cluster name and agent joining cluster using name
+  # Set to name that resolves to all master nodes
+  # Default: k3s.local
+  clusterName: ""
 
 master:
-  count: 1  # How many master nodes
+  count: 3  # How many master nodes
   specs:
     box: "ubuntu/bionic64"
     eth1: "172.20.22.10"  # First master IP
@@ -22,11 +25,16 @@ master:
   k3sParams: "--no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --node-taint k3s-controlplane=true:NoExecute"
 
 worker:
-  count: 1  # How many master nodes
+  count: 3  # How many master nodes
   specs:
     box: "ubuntu/bionic64"
     eth1: "172.20.22.20"  # First master IP
     cpu: 1
     mem: 1024
   k3sParams: ""
+
+# Array of additinal entries to add to /etc/hosts file
+# Format: IP DNS
+hosts: []
+# - 10.10.10.10 example.com
 
