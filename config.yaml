@@ -13,7 +13,7 @@ k3s:
   clusterName: "k3s.local"
 
 master:
-  count: 1  # How many master nodes
+  count: 3  # How many master nodes
   specs:
     box: "ubuntu/bionic64"
     eth1: "172.20.22.10"  # First master IP
@@ -22,7 +22,7 @@ master:
   k3sParams: "--no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --node-taint k3s-controlplane=true:NoExecute"
 
 worker:
-  count: 1  # How many master nodes
+  count: 3  # How many master nodes
   specs:
     box: "ubuntu/bionic64"
     eth1: "172.20.22.20"  # First master IP

@@ -1,0 +1,25 @@
+---
+- hosts: master
+  tasks:
+  - name: Update /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ item }}"
+    with_items: "{{ hosts }}"
+
+  - name: Install etcd (Debian)
+    when: ansible_facts.os_family == 'Debian'
+    apt:
+      name: etcd
+
+  - name: Update /etc/default/etcd
+    template:
+      src: templates/etcd.j2
+      dest: /etc/default/etcd
+
+  - name: Start etcd
+    service:
+      name: etcd
+      state: restarted
+      enabled: yes
+

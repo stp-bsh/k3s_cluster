@@ -1,0 +1,1 @@
+datastoreEndpoint: master01=http://172.20.22.10:2380,master02=http://172.20.22.11:2380,master03=http://172.20.22.12:2380

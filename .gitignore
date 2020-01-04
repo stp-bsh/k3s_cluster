@@ -11,3 +11,4 @@ logs
 pid
 .vagrant/
 k3s.yaml
+tmp/
