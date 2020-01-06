@@ -13,6 +13,11 @@ $ kubectl get node -o wide
 NOTES: By default `k3s.yaml` points to `https://k3s.local:6443` if `k3s.clusterName` is not set in `config.yaml`. Make sure `k3s.local` is resolvable from where `kubectl` is executed.
 You may have to add `k3s.local` as an entry into `/etc/hosts` (Linux) or `C:\Windows\system32\drivers\etc\hosts` (Windows) file.
 
+## Boxes Compatibility
+* `ubuntu/bionic64`
+* `debian/buster64`
+* `centos/7`
+
 ## Troubleshooting
 __Problem__: k3s won't start completely.
 

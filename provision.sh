@@ -8,17 +8,28 @@ sed -i 's/\r//g' tmp/*
 
 source "tmp/$NAME"
 hosts_file="tmp/hosts"
+cat /etc/os-release | grep -i centos
+if [ $? -eq 0 ]; then
+  os_family=rhel
+else
+  os_family=debian
+fi
 
 # Install and configure etcd on first master if K3S_DATASTORE_ENDPOINT is not set.
 if [[ "$NAME" =~ "master01" && -z "$K3S_DATASTORE_ENDPOINT" ]]; then
-  apt update && apt install -y etcd
+  if [ $os_family == "rhel" ]; then
+    yum install -y wget etcd
+    cp etcd.service /usr/lib/systemd/system/etcd.service
+  else
+    apt update && apt install -y etcd
+  fi
   etcd_file=/etc/default/etcd
-  [ -f $etcd_file ] && mv $etcd_file "${etcd_file}.`date +'%Y%m%d'`"
   (
   echo ETCD_ADVERTISE_CLIENT_URLS=\"http://${K3S_NODE_IP}:2379\"
   echo ETCD_LISTEN_CLIENT_URLS=\"http://${K3S_NODE_IP}:2379,http://127.0.0.1:2379\"
   echo ETCD_INITIAL_CLUSTER_TOKEN=\"k3s-cluster\"
   ) > $etcd_file
+  systemctl daemon-reload
   systemctl enable etcd
   systemctl restart etcd
 fi
@@ -67,7 +78,8 @@ else
   start_command="\/usr\/local\/bin\/k3s agent --node-ip \$K3S_NODE_IP $K3S_PARAMS"
 fi
 echo $start_command
-sed "s/ExecStart.*/ExecStart=$start_command/g" `pwd`/k3s.service > /lib/systemd/system/k3s.service
+sed "s/ExecStart.*/ExecStart=$start_command/g" k3s.service > /lib/systemd/system/k3s.service
+systemctl daemon-reload
 systemctl enable k3s
 systemctl restart k3s
 

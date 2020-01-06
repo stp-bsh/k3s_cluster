@@ -18,7 +18,7 @@ k3s:
 master:
   count: 1  # How many master nodes
   specs:
-    box: "ubuntu/bionic64"
+    box: "centos/7"
     eth1: "172.20.22.10"  # First master IP
     cpu: 1
     mem: 1024
@@ -27,7 +27,7 @@ master:
 worker:
   count: 1  # How many master nodes
   specs:
-    box: "ubuntu/bionic64"
+    box: "centos/7"
     eth1: "172.20.22.20"  # First master IP
     cpu: 1
     mem: 1024
